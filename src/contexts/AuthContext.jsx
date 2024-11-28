@@ -39,8 +39,10 @@ export const AuthProvider = ({ children }) => {
             setUser(data.user);
             setToken(data.access_token);
             setError(null);
+            return true
         } else {
             setError('Login failed');
+            return false
         }
     };
 
