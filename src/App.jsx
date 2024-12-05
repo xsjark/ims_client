@@ -13,8 +13,12 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route
-            path="/dashboard"
-            element={<ProtectedRoute element={<Dashboard />} />}
+            path="/product-dashboard"
+            element={<ProtectedRoute element={<Dashboard type='Product' />} />}
+          />
+          <Route
+            path="/warehouse-dashboard"
+            element={<ProtectedRoute element={<Dashboard type='Warehouse' />} />}
           />
           <Route path="*" element={<Navigate to="/login" />} /> {/* Redirect all unknown routes to login */}
         </Routes>

@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext'; // Adjust the import path as 
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-    const { user, loading, error, login } = useAuth();
+    const { user, loading, error, login, token } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ const LoginForm = () => {
         e.preventDefault();
         const success = await login(email, password);
         if (success) {
-            navigate('/dashboard');
+            navigate('/product-dashboard');
         }
     };
 
@@ -23,6 +23,7 @@ const LoginForm = () => {
     return (
         <div>
             <h1>Please Log In</h1>
+            {token}
             {user?.email}
             <form onSubmit={handleSubmit}>
                 <div>
