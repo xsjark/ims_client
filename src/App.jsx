@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import { Vehicles } from './pages/Vehicles';
 
 const App = () => {
   return (
@@ -13,12 +14,12 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route
-            path="/product-dashboard"
-            element={<ProtectedRoute element={<Dashboard type='Product' />} />}
+            path="/vehicle-dashboard"
+            element={<ProtectedRoute element={<Vehicles />} />}
           />
           <Route
-            path="/warehouse-dashboard"
-            element={<ProtectedRoute element={<Dashboard type='Warehouse' />} />}
+            path="/jobs-dashboard"
+            element={<ProtectedRoute element={<Dashboard type='Jobs' />} />}
           />
           <Route path="*" element={<Navigate to="/login" />} /> {/* Redirect all unknown routes to login */}
         </Routes>

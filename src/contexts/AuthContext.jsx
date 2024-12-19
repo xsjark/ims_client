@@ -1,40 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-const API_URL = 'http://localhost:3000';
-
-async function fetchApi(endpoint, method = 'GET', body, token) {
-    const headers = {
-        'Content-Type': 'application/json',
-    };
-
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    try {
-        const response = await fetch(`${API_URL}${endpoint}`, {
-            method,
-            headers,
-            body: body ? JSON.stringify(body) : undefined,
-            credentials: 'include', // This is important for handling cookies
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw data.error;
-        }
-
-        return data;
-    } catch (error) {
-        return {
-            data: null,
-            error: {
-                code: error.code || 'UNKNOWN_ERROR',
-                message: error.message || 'An unexpected error occurred',
-            },
-        };
-    }
-}
+import fetchApi from '../helpers/FetchAPI';
 
 const api = {
     login: (email, password) => fetchApi('/auth/login', 'POST', { email, password }),
@@ -52,55 +17,63 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
-    const [loading, setLoading] = useState(true);  // Global loading state
+    const [accessToken, setAccessToken] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [data, setData] = useState(null);
+    const [XCSRFToken, setXCSRFToken] = useState(null)
 
     const login = async (email, password) => {
-        setLoading(true);  // Set loading to true when login starts
+        setLoading(true);
         const { data, error } = await api.login(email, password);
         if (data) {
             setUser(data.user);
-            setToken(data.access_token);
+            setAccessToken(data.access_token);
             setError(null);
-            setLoading(false);  // Set loading to false after login finishes
+            setLoading(false);
+            setXCSRFToken(data.xcsrf_token);
             return true;
         } else {
             setError('Login failed');
-            setLoading(false);  // Set loading to false if login fails
+            setLoading(false);
             return false;
         }
     };
 
     // Add loading state to logout
     const logout = async () => {
-        setLoading(true);  // Set loading to true when logout starts
-        if (token) {
-            await api.logout(token);
+        setLoading(true); 
+        if (accessToken) {
+            await api.logout(accessToken);
         }
         setUser(null);
-        setToken(null);
+        setAccessToken(null);
+        setXCSRFToken(null);
         setError(null);
-        setLoading(false);  // Set loading to false after logout finishes
+        setLoading(false);  
     };
 
     const refresh = useCallback(async () => {
         setLoading(true);
+        setAccessToken(null);
+        setXCSRFToken(null);
+        setUser(null);
         try {
             const { data } = await api.refresh();
             if (data) {
-                setData(data);
-                setToken(data.session.access_token)
+                setAccessToken(data.session.access_token)
+                setUser(data.user)
+                setXCSRFToken(data.xcsrf_token)
                 setError(null);
             } else {
                 setError('Failed to refresh data');
-                setToken(null);
+                setAccessToken(null);
+                setXCSRFToken(null);
                 setUser(null);
             }
         } catch (error) {
             setError('An error occurred while refreshing data');
-            setToken(null);
+            setAccessToken(null);
+            setXCSRFToken(null);
             setUser(null);
         } finally {
             setLoading(false);
@@ -124,7 +97,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            user, token, loading, error, login, logout, data, refresh
+            user, accessToken, loading, error, login, logout, refresh, XCSRFToken
         }}>
             {children}
         </AuthContext.Provider>
