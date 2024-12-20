@@ -2,22 +2,33 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import fetchApi from "../helpers/FetchAPI";
 import ModalWrapper from "../components/ModalWrapper";
-import { CreateVehicleForm } from "../components/CreateVehicleForm";
+import { CreateVehicleForm } from "../components/Forms/CreateVehicleForm";
+import { DeleteVehicleForm } from "../components/Forms/DeleteVehicleForm";
+import { EditVehicleForm } from "../components/Forms/EditVehicleForm";
 
 export const Vehicles = () => {
     const { accessToken } = useAuth();
-    
+
     const [vehicleData, setVehicleData] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalStates, setModalStates] = useState({
+        createVehicle: false,
+        deleteVehicle: false,
+        editVehicle: false
+    });
 
-    const toggleModal = () => setModalOpen(!isModalOpen);
+    const toggleModal = (modalType) => {
+        setModalStates(prevStates => ({
+            ...prevStates,
+            [modalType]: !prevStates[modalType]
+        }));
+    };
 
     const handleGetVehicleData = async () => {
         try {
             const { data, error } = await fetchApi('/api/vehicles', 'GET', undefined, accessToken);
-            
+
             if (error) {
                 setError(error);
                 return;
@@ -41,13 +52,27 @@ export const Vehicles = () => {
     return (
         <div>
             <ModalWrapper
-                isOpen={isModalOpen} 
-                onClose={toggleModal}
+                isOpen={modalStates.createVehicle}
+                onClose={() => toggleModal('createVehicle')}
             >
                 <CreateVehicleForm />
             </ModalWrapper>
+            <ModalWrapper
+                isOpen={modalStates.deleteVehicle}
+                onClose={() => toggleModal('deleteVehicle')}
+            >
+                <DeleteVehicleForm />
+            </ModalWrapper>
+            <ModalWrapper
+                isOpen={modalStates.editVehicle}
+                onClose={() => toggleModal('editVehicle')}
+            >
+                <EditVehicleForm handleGetVehicleData={handleGetVehicleData}/>
+            </ModalWrapper>
             <h1>Vehicles</h1>
-            <button onClick={toggleModal}>Create Vehicle</button>
+            <button onClick={() => toggleModal('createVehicle')}>Create</button>            
+            <button onClick={() => toggleModal('deleteVehicle')}>Delete</button>
+            <button onClick={() => toggleModal('editVehicle')}>Edit</button>
             <table>
                 <thead>
                     <tr>
@@ -56,6 +81,7 @@ export const Vehicles = () => {
                         <th>Location</th>
                         <th>Job</th>
                         <th>Cargo</th>
+                        <th>Disabled</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,10 +94,11 @@ export const Vehicles = () => {
                             <td>
                                 <ul>
                                     {vehicle.job && vehicle.job.cargo_items.map(cargoItem => (
-                                       <li>Item: {cargoItem.name}, Quantity: {cargoItem.quantity}</li> 
+                                        <li>Item: {cargoItem.name}, Quantity: {cargoItem.quantity}</li>
                                     ))}
                                 </ul>
                             </td>
+                            <td>{JSON.stringify(vehicle.disabled)}</td>
                         </tr>
                     ))}
                 </tbody>

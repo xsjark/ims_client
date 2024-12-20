@@ -1,6 +1,6 @@
 import { useState } from "react"
-import fetchApi from "../helpers/FetchAPI";
-import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import fetchApi from "../../helpers/FetchAPI";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const CreateVehicleForm = ({ onClose }) => {
 
@@ -20,11 +20,11 @@ export const CreateVehicleForm = ({ onClose }) => {
                 setError(error);
             }
             
+            onClose();
         } catch (error) {
             setError(error);
         } finally {
             setUpdating(false);
-            onClose();
         }
     }
 
@@ -36,7 +36,7 @@ export const CreateVehicleForm = ({ onClose }) => {
                 onChange={(e) => setLicensePlate(e.target.value)}
             />
             <button type='submit' disabled={updating} >Create</button>
-            {error && error}
+            <p>{error}</p>
         </form>
     )
 }
