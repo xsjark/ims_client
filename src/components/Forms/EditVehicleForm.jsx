@@ -15,7 +15,13 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
         e.preventDefault();
         setLoading(true)
         try {
-            const { data, error } = await fetchApi(`/api/vehicles/${vehicleId}`, 'GET', undefined, accessToken);
+            const { data, error } = await fetchApi(
+                `/api/vehicles/${vehicleId}`,
+                'GET',
+                undefined,
+                accessToken,
+                XCSRFToken
+            );
 
             if (error) {
                 setError(error);
@@ -30,7 +36,7 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
             setLoading(false);
         }
     };
-    
+
     const handleInputChange = (key, value) => {
         setUpdatedVehicleData(prevData => ({
             ...prevData,
@@ -43,9 +49,9 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
         setLoading(true)
         try {
             const { error } = await fetchApi(
-                `/api/vehicles/${vehicleId}`, 
-                'PUT', 
-                { updated_vehicle_data: updatedVehicleData }, 
+                `/api/vehicles/${vehicleId}`,
+                'PUT',
+                { updated_vehicle_data: updatedVehicleData },
                 accessToken,
                 XCSRFToken
             );
@@ -78,15 +84,17 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
                 <button type='submit' disabled={loading}>Search</button>
             </form>
             <form onSubmit={submitUpdatedVehicleData} >
-                    {Object.keys(vehicleData).map((key) => (
-                        <input 
-                            placeholder={key} 
-                            onChange={(e) => handleInputChange(key, e.target.value)} 
-                            disabled={loading}
-                        />
-                    ))}
-                    <button type='submit' disabled={loading || !updatedVehicleData}>Save</button>
-                </form>
+                {Object.keys(vehicleData).map((key) => (
+                    <input
+                        placeholder={vehicleData[key]}
+                        value={updatedVehicleData[key]}
+                        onChange={(e) => handleInputChange(key, e.target.value)}
+                        disabled={loading}
+                    />
+                ))}
+                <button type='submit' disabled={loading || !updatedVehicleData}>Save</button>
+                <p>{error}</p>
+            </form>
         </div>
 
     )
