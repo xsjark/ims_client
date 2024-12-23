@@ -3,7 +3,7 @@ import fetchApi from "../../helpers/FetchAPI";
 import { useAuth } from "../../contexts/AuthContext";
 
 export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
-    const { accessToken } = useAuth();
+    const { accessToken, XCSRFToken } = useAuth();
 
     const [vehicleId, setVehicleId] = useState('');
     const [vehicleData, setVehicleData] = useState({});
@@ -22,7 +22,7 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
                 setLoading(false)
                 return;
             }
-            
+
             setVehicleData(data);
         } catch (error) {
             setError(error);
@@ -46,7 +46,8 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
                 `/api/vehicles/${vehicleId}`, 
                 'PUT', 
                 { updated_vehicle_data: updatedVehicleData }, 
-                accessToken
+                accessToken,
+                XCSRFToken
             );
 
             if (error) {

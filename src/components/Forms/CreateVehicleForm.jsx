@@ -4,7 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export const CreateVehicleForm = ({ onClose }) => {
 
-    const { accessToken } = useAuth();
+    const { accessToken, XCSRFToken } = useAuth();
 
     const [licensePlate, setLicensePlate] = useState('');
     const [error, setError] = useState();
@@ -14,10 +14,11 @@ export const CreateVehicleForm = ({ onClose }) => {
         e.preventDefault();
         setUpdating(true);
         try {
-            const { error } = await fetchApi('/api/vehicles', 'POST', { license_plate: licensePlate }, accessToken)
+            const { error } = await fetchApi('/api/vehicles', 'POST', { license_plate: licensePlate }, accessToken, XCSRFToken)
 
             if (error) {
                 setError(error);
+                return;
             }
             
             onClose();

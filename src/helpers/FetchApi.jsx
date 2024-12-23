@@ -1,12 +1,16 @@
 const API_URL = 'http://localhost:3000';
 
-async function fetchApi(endpoint, method = 'GET', body, token) {
+async function fetchApi(endpoint, method = 'GET', body, token, XCSRFToken) {
     const headers = {
         'Content-Type': 'application/json',
     };
 
     if (token) {
         headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    if (XCSRFToken) {
+        headers['X-CSRF-Token'] = XCSRFToken;
     }
 
     try {
@@ -27,10 +31,7 @@ async function fetchApi(endpoint, method = 'GET', body, token) {
     } catch (error) {
         return {
             data: null,
-            error: {
-                code: error.code || 'UNKNOWN_ERROR',
-                message: error.message || 'An unexpected error occurred',
-            },
+            error: error,
         };
     }
 };
