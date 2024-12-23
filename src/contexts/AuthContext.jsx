@@ -3,14 +3,10 @@ import fetchApi from '../helpers/FetchAPI';
 
 const api = {
     login: (email, password) => fetchApi('/auth/login', 'POST', { email, password }),
-
     refreshToken: () => fetchApi('/auth/refresh-token', 'POST'),
-
     logout: (token) => fetchApi('/auth/logout', 'POST', undefined, token),
-
     verifyToken: (token) => fetchApi('/auth/verify-token', 'GET', undefined, token),
-
-    refresh: () => fetchApi('/api/refresh', 'POST', undefined, undefined)
+    refresh: () => fetchApi('/auth/refresh', 'POST', undefined, undefined)
 };
 
 const AuthContext = createContext();
