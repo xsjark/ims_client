@@ -27,6 +27,7 @@ export const DeleteVehicleForm = ({ onClose }) => {
     
     return (
         <form onSubmit={handleSubmit}>
+            <p>{vehicleId}</p>
             <input 
                 placeholder='Vehicle ID'
                 value={vehicleId}

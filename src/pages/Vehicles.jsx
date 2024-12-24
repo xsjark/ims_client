@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import fetchApi from "../helpers/FetchAPI";
 import ModalWrapper from "../components/ModalWrapper";
-import { CreateVehicleForm } from "../components/Forms/CreateVehicleForm";
-import { DeleteVehicleForm } from "../components/Forms/DeleteVehicleForm";
+import { CreateVehicleForm } from "../components/forms/CreateVehicleForm";
+import { DeleteVehicleForm } from "../components/forms/DeleteVehicleForm";
 import { EditVehicleForm } from "../components/Forms/EditVehicleForm";
 
 export const Vehicles = () => {
@@ -89,8 +89,8 @@ export const Vehicles = () => {
                         <tr key={vehicle.id}>
                             <td>{vehicle.id}</td>
                             <td>{vehicle.license_plate}</td>
-                            <td>{`${vehicle.location.lat}, ${vehicle.location.long}`}</td>
-                            <td>{vehicle.job?.customer.name ? vehicle.job.customer.name : 'AVAILABLE'}</td>
+                            <td>{`${vehicle.longitude}, ${vehicle.latitude}`}</td>
+                            <td>{vehicle.job ? vehicle.job.customer.name : 'AVAILABLE'}</td>
                             <td>
                                 <ul>
                                     {vehicle.job && vehicle.job.cargo_items.map(cargoItem => (

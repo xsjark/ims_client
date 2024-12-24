@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import fetchApi from "../../helpers/FetchAPI";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -87,7 +87,7 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
                 {Object.keys(vehicleData).map((key) => (
                     <input
                         placeholder={vehicleData[key]}
-                        value={updatedVehicleData[key]}
+                        value={updatedVehicleData?.[key] || vehicleData[key]}
                         onChange={(e) => handleInputChange(key, e.target.value)}
                         disabled={loading}
                     />
