@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext"
-import fetchApi from "../../helpers/FetchAPI";
+import fetchApi from "../../helpers/fetchApi";
 
 export const DeleteVehicleForm = ({ onClose }) => {
-    const { accessToken, XCSRFToken } = useAuth();
+    const { accessToken } = useAuth();
     const [vehicleId, setVehicleId] = useState('');
     const [error, setError] = useState();
     const [deleting, setDeleting] = useState(false)
@@ -11,7 +11,12 @@ export const DeleteVehicleForm = ({ onClose }) => {
     const handleSubmit = async () => {
         setDeleting(true)
         try {
-            const { error } = await fetchApi('/api/vehicles', 'DELETE', { id: vehicleId }, accessToken, XCSRFToken)
+            const { error } = await fetchApi(
+                '/api/vehicles', 
+                'DELETE', 
+                { id: vehicleId }, 
+                accessToken
+            )
             
             if (error) {
                 setError(error);

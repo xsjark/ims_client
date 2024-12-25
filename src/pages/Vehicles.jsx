@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import fetchApi from "../helpers/FetchAPI";
+import fetchApi from "../helpers/fetchApi";
 import ModalWrapper from "../components/ModalWrapper";
 import { CreateVehicleForm } from "../components/forms/CreateVehicleForm";
 import { DeleteVehicleForm } from "../components/forms/DeleteVehicleForm";

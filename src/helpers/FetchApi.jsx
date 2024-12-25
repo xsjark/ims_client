@@ -1,3 +1,5 @@
+import { getXCSRFToken } from "./getXCSRFToken";
+
 const API_URL = 'http://localhost:3000';
 
 async function fetchApi(endpoint, method = 'GET', body, token, XCSRFToken) {
@@ -10,7 +12,7 @@ async function fetchApi(endpoint, method = 'GET', body, token, XCSRFToken) {
     }
 
     if (XCSRFToken) {
-        headers['X-CSRF-Token'] = XCSRFToken;
+        headers['X-CSRF-Token'] = getXCSRFToken();
     }
 
     try {

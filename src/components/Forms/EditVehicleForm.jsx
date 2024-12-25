@@ -1,13 +1,13 @@
 import { useState } from "react";
-import fetchApi from "../../helpers/FetchAPI";
+import fetchApi from "../../helpers/fetchApi";
 import { useAuth } from "../../contexts/AuthContext";
 
 export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
-    const { accessToken, XCSRFToken } = useAuth();
+    const { accessToken } = useAuth();
 
     const [vehicleId, setVehicleId] = useState('');
     const [vehicleData, setVehicleData] = useState({});
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [updatedVehicleData, setUpdatedVehicleData] = useState()
 
@@ -20,7 +20,7 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
                 'GET',
                 undefined,
                 accessToken,
-                XCSRFToken
+                true
             );
 
             if (error) {
@@ -53,7 +53,7 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
                 'PUT',
                 { updated_vehicle_data: updatedVehicleData },
                 accessToken,
-                XCSRFToken
+                true
             );
 
             if (error) {

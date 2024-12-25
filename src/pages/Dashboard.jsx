@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Dashboard = ({ type }) => {
-    const { accessToken, logout, loading, XCSRFToken } = useAuth();
+    const { accessToken, logout, loading } = useAuth();
     const navigate = useNavigate();
 
     if (loading) {
@@ -15,7 +15,6 @@ const Dashboard = ({ type }) => {
             <button onClick={() => navigate('/warehouse-dashboard')}>Warehouse</button>
             <h1>{type} Dashboard</h1>
             <p>Token: {accessToken}</p>
-            <p> X-CSRF Token: {XCSRFToken}</p>
         </div>
     );
 };
