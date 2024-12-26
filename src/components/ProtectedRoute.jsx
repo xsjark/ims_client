@@ -13,7 +13,6 @@ const ProtectedRoute = ({ element }) => {
         <div>
             <button onClick={() => logout()}>Logout</button>
             <button onClick={() => navigate('/warehouse-dashboard')}>Warehouse</button>
-            <p>{accessToken}</p>
             {element}
         </div>
         : <Navigate to="/login" replace />;

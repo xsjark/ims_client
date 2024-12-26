@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import { Vehicles } from './pages/Vehicles';
+import './App.css'
 
 const App = () => {
   return (

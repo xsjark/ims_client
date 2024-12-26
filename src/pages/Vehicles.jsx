@@ -5,6 +5,7 @@ import ModalWrapper from "../components/ModalWrapper";
 import { CreateVehicleForm } from "../components/forms/CreateVehicleForm";
 import { DeleteVehicleForm } from "../components/forms/DeleteVehicleForm";
 import { EditVehicleForm } from "../components/Forms/EditVehicleForm";
+import { VehicleTable } from "../components/tables/VehicleTable";
 
 export const Vehicles = () => {
     const { accessToken } = useAuth();
@@ -55,13 +56,13 @@ export const Vehicles = () => {
                 isOpen={modalStates.createVehicle}
                 onClose={() => toggleModal('createVehicle')}
             >
-                <CreateVehicleForm />
+                <CreateVehicleForm handleGetVehicleData={handleGetVehicleData}/>
             </ModalWrapper>
             <ModalWrapper
                 isOpen={modalStates.deleteVehicle}
                 onClose={() => toggleModal('deleteVehicle')}
             >
-                <DeleteVehicleForm />
+                <DeleteVehicleForm handleGetVehicleData={handleGetVehicleData}/>
             </ModalWrapper>
             <ModalWrapper
                 isOpen={modalStates.editVehicle}
@@ -73,36 +74,7 @@ export const Vehicles = () => {
             <button onClick={() => toggleModal('createVehicle')}>Create</button>            
             <button onClick={() => toggleModal('deleteVehicle')}>Delete</button>
             <button onClick={() => toggleModal('editVehicle')}>Edit</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>License plate</th>
-                        <th>Location</th>
-                        <th>Job</th>
-                        <th>Cargo</th>
-                        <th>Disabled</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {vehicleData.map(vehicle => (
-                        <tr key={vehicle.id}>
-                            <td>{vehicle.id}</td>
-                            <td>{vehicle.license_plate}</td>
-                            <td>{`${vehicle.longitude}, ${vehicle.latitude}`}</td>
-                            <td>{vehicle.job ? vehicle.job.customer.name : 'AVAILABLE'}</td>
-                            <td>
-                                <ul>
-                                    {vehicle.job && vehicle.job.cargo_items.map(cargoItem => (
-                                        <li>Item: {cargoItem.name}, Quantity: {cargoItem.quantity}</li>
-                                    ))}
-                                </ul>
-                            </td>
-                            <td>{JSON.stringify(vehicle.disabled)}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <VehicleTable data={vehicleData} />
         </div>
     );
 };

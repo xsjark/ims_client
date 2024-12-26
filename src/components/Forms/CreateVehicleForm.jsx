@@ -2,7 +2,7 @@ import { useState } from "react"
 import fetchApi from "../../helpers/fetchApi";
 import { useAuth } from "../../contexts/AuthContext";
 
-export const CreateVehicleForm = ({ onClose }) => {
+export const CreateVehicleForm = ({ onClose, handleGetVehicleData }) => {
 
     const { accessToken } = useAuth();
 
@@ -32,6 +32,7 @@ export const CreateVehicleForm = ({ onClose }) => {
                 return;
             }
             
+            handleGetVehicleData();
             onClose();
         } catch (error) {
             setError(error);
@@ -54,7 +55,7 @@ export const CreateVehicleForm = ({ onClose }) => {
                 onChange={(e) => setClassification(e.target.value)}
             />
             <button type='submit' disabled={updating} >Create</button>
-            <p>{error}</p>
+            <p>{error.toString()}</p>
         </form>
     )
 }

@@ -90,10 +90,11 @@ export const EditVehicleForm = ({ onClose, handleGetVehicleData }) => {
                         value={updatedVehicleData?.[key] || vehicleData[key]}
                         onChange={(e) => handleInputChange(key, e.target.value)}
                         disabled={loading}
+                        key={key}
                     />
                 ))}
                 <button type='submit' disabled={loading || !updatedVehicleData}>Save</button>
-                <p>{error}</p>
+                <p>{error.toString()}</p>
             </form>
         </div>
 
