@@ -14,7 +14,6 @@ export const VehicleTable = ({ data }) => {
                     <th>Created</th>
                     <th>Modified</th>
                     <th>Disabled</th>
-                    <th>Disabled At</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,21 +34,17 @@ export const VehicleTable = ({ data }) => {
                                 }
                             </ul>
                         </td>
-                        <td>
+                        <td title={vehicle.created_by}>
                             {`${format(new Date(vehicle.created_at), 'dd/MM/yy HH:mm')}`}
                         </td>
-                        <td>
+                        <td title={vehicle.modified_at && vehicle.modified_by}>
                             {vehicle.modified_at
                                 ? format(new Date(vehicle.disabled_at), 'dd/MM/yy HH:mm')
                                 : '-'
                             }
                         </td>
-                        <td>{vehicle.disabled ? 'disabled' : 'active'}</td>
-                        <td>
-                            {vehicle.disabled
-                                ? format(new Date(vehicle.disabled_at), 'dd/MM/yy HH:mm')
-                                : '-'
-                            }
+                        <td title={vehicle.disabled && `${format(new Date(vehicle.disabled_at), 'dd/MM/yy HH:mm')} by ${vehicle.disabled_by}`}>
+                            {vehicle.disabled ? 'disabled' : 'active'}
                         </td>
                     </tr>
                 ))}
