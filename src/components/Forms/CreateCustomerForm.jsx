@@ -2,12 +2,14 @@ import { useState } from "react"
 import fetchApi from "../../helpers/fetchApi";
 import { useAuth } from "../../contexts/AuthContext";
 
-export const CreateVehicleForm = ({ onClose, handleGetVehicleData }) => {
+export const CreateCustomerForm = ({ onClose, handleGetCustomerData }) => {
 
     const { accessToken } = useAuth();
 
-    const [licensePlate, setLicensePlate] = useState('');
-    const [classification, setClassification] = useState('');
+    const [name, setName] = useState('');
+    const [contact, setContact] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
     const [updating, setUpdating] = useState(false);
 
@@ -16,11 +18,13 @@ export const CreateVehicleForm = ({ onClose, handleGetVehicleData }) => {
         setUpdating(true);
         try {
             const result = await fetchApi(
-                '/api/vehicles', 
+                '/api/customers', 
                 'POST', 
                 { 
-                    license_plate: licensePlate,
-                    classification: classification
+                    name,
+                    contact,
+                    email,
+                    phone
                 }, 
                 accessToken,
                 true
@@ -32,7 +36,7 @@ export const CreateVehicleForm = ({ onClose, handleGetVehicleData }) => {
                 return;
             }
             
-            handleGetVehicleData();
+            handleGetCustomerData();
             onClose();
         } catch (error) {
             setError(error);
@@ -44,17 +48,27 @@ export const CreateVehicleForm = ({ onClose, handleGetVehicleData }) => {
     return (
         <form onSubmit={handleSubmit}>
             <input 
-                placeholder='License plate'
-                value={licensePlate}
-                onChange={(e) => setLicensePlate(e.target.value)}
+                placeholder='name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
             />
             <input 
-                placeholder='Classification'
-                value={classification}
-                onChange={(e) => setClassification(e.target.value)}
+                placeholder='contact'
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+            />
+            <input 
+                placeholder='phone'
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+            />
+            <input 
+                placeholder='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
             />
             <button type='submit' disabled={updating} >Create</button>
-            <p>{error.toString()}</p>
+            <p>{JSON.stringify(error)}</p>
         </form>
     )
 }

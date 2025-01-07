@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import { Vehicles } from './pages/Vehicles';
 import './App.css'
+import { Customers } from './pages/Customers';
 
 const App = () => {
   return (
@@ -19,10 +20,10 @@ const App = () => {
             element={<ProtectedRoute element={<Vehicles />} />}
           />
           <Route
-            path="/jobs-dashboard"
-            element={<ProtectedRoute element={<Dashboard type='Jobs' />} />}
+            path="/customer-dashboard"
+            element={<ProtectedRoute element={<Customers />} />}
           />
-          <Route path="*" element={<Navigate to="/login" />} /> {/* Redirect all unknown routes to login */}
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </Router>
     </AuthProvider>
